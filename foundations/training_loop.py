@@ -16,16 +16,19 @@ class Solution:
         # return (np.round(w, 5), round(b, 5))
         w=np.zeros(X.shape[1])
         b=0
+
         for _ in range(epochs):
-            x = np.dot(X, w) + b
-            mse = np.mean((x-y)**2)
+            out = np.dot(X, w.T) + b
+            mse = np.mean((out - y)**2)
 
             # backward
-            dl_dw = (2*(x-y)/len(X))@X
-            dl_db = np.sum(2*(x-y)/len(X))
+            dout = 2*(out-y)/len(X)
+            dw = dout.T @ X
+            db = dout.sum(axis=0)
 
-            w-=lr*dl_dw
-            b-=lr*dl_db
-
-        return (np.round(w, 5), round(float(b), 5))
+            # update
+            w-=lr*dw
+            b-=lr*db
+        
+        return (np.round(w, 5), round(b, 5))
 
