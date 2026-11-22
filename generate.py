@@ -17,7 +17,7 @@ class Solution:
         for i in range(new_chars):
             x = context[:, -context_length:]
             logits = model(x)
-            probs = nn.Softmax()(logits[:, -1, :])
+            probs = nn.Softmax(dim=-1)(logits[:, -1, :])
             id = torch.multinomial(probs, 1, generator=generator)
             generator.set_state(initial_state)
             context = torch.cat((context, id), dim=-1)
